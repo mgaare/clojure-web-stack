@@ -1,0 +1,189 @@
+;; Basics
+
+[{:db/id #db/id[:db.part/db]
+  :db/ident :label
+  :db/cardinality :db.cardinality/one
+  :db/valueType :db.type/string
+  :db/doc "display label of an entity"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :db.part/task
+  :db.install/_partition :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :db.part/account
+  :db.install/_partition :db.part/db}]
+
+
+
+;; Task schema
+
+[;; Task schema elements
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :task/description
+  :db/cardinality :db.cardinality/one
+  :db/valueType :db.type/string
+  :db/doc "description of the task"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :task/title
+  :db/cardinality :db.cardinality/one
+  :db/valueType :db.type/string
+  :db/doc "title of the task"
+  :db/fulltext true
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :task/status
+  :db/cardinality :db.cardinality/one
+  :db/valueType :db.type/ref
+  :db/doc "task status - an enum"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :task/issue-id
+  :db/cardinality :db.cardinality/one
+  :db/valueType :db.type/string
+  :db/doc "task's issue ID, for external reference"
+  :db/unique :db.unique/identity
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :task/tag
+  :db/cardinality :db.cardinality/many
+  :db/valueType :db.type/ref
+  :db/doc "task tags"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :tag/name
+  :db/cardinality :db.cardinality/one
+  :db/valueType :db.type/string
+  :db/doc "tag's name, used as identity"
+  :db/unique :db.unique/identity
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :task/parent
+  :db/cardinality :db.cardinality/one
+  :db/valueType :db.type/ref
+  :db/doc "parent of the task, establishing arbitrary hierarchy"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :task/user
+  :db/cardinality :db.cardinality/many
+  :db/valueType :db.type/ref
+  :db/doc "The user or users to which the task belongs"
+  :db.install/_attribute :db.part/db}
+
+ ;; Task enums
+ {:db/id #db/id[:db.part/task]
+  :db/ident :task.status/todo
+  :label "To Do"}
+
+ {:db/id #db/id[:db.part/task]
+  :db/ident :task.status/in-progress
+  :label "In Progress"}
+
+ {:db/id #db/id[:db.part/task]
+  :db/ident :task.status/done
+  :label "Done"}]
+
+;; User schema
+
+[{:db/id #db/id[:db.part/db]
+  :db/ident :user/login
+  :db/cardinality :db.cardinality/one
+  :db/valueType :db.type/string
+  :db/doc "user's login name and display name"
+  :db/unique :db.unique/identity
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :user/password
+  :db/cardinality :db.cardinality/one
+  :db/valueType :db.type/string
+  :db/doc "crypted pasword"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :user/email
+  :db/cardinality :db.cardinality/one
+  :db/valueType :db.type/string
+  :db/doc "User's email address"
+  :db/unique :db.unique/value
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :user/account
+  :db/cardinality :db.cardinality/one
+  :db/valueType :db.type/ref
+  :db/isComponent true
+  :db/doc "The account linked to the user"
+  :db.install/_attribute :db.part/db}]
+
+;; Account schema
+
+[{:db/id #db/id[:db.part/db]
+  :db/ident :account/type
+  :db/cardinality :db.cardinality/one
+  :db/valueType :db.type/ref
+  :db/doc "account type (eg paid, free), an enum"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :account/current-balance
+  :db/cardinality :db.cardinality/one
+  :db/valueType :db.type/bigdec
+  :db/doc "current balance of the account"
+  :db/index true
+  :db/noHistory true
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :account/transaction
+  :db/cardinality :db.cardinality/many
+  :db/valueType :db.type/ref
+  :db/isComponent true
+  :db/doc "transactions (payments and charges) against the account"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :transaction/type
+  :db/cardinality :db.cardinality/one
+  :db/valueType :db.type/ref
+  :db/doc "transaction type (eg charge, payment, adjustment) - an enum"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :transaction/amount
+  :db/cardinality :db.cardinality/one
+  :db/valueType :db.type/bigdec
+  :db/doc "amount of the transaction"
+  :db.install/_attribute :db.part/db}
+
+ ;; Account enums
+
+ {:db/id #db/id[:db.part/account]
+  :db/ident :account.type/free
+  :label "Free account"}
+
+ {db/id #db/id[:db.part/account]
+  :db/ident :account.type/paid
+  :label "Paid account"}
+
+ {:db/id #db/id[:db.part/account]
+  :db/ident :transaction.type/charge
+  :label "Charge"}
+
+ {:db/id #db/id[:db.part/account]
+  :db/ident :transaction.type/payment
+  :label "Payment"}
+
+ {:db/id #db/id[:db.part/account]
+  :db/ident :transaction.type/adjustment
+  :label "Adjustment"}]

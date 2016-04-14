@@ -1,0 +1,44 @@
+;; A test user, with account and charges
+[{:db/id #db/id[:db.part/account]
+  :user/login "janed"
+  ;; bcrypted "totalanon"
+  :user/password "$2a$11$W2juQqRpaxVqXt4u..4qz.asyhbfR53K1a3stjQ3wpUYOCcagH8VK"
+  :user/email "everywoman123@gmail.com"
+  :user/account
+  {:account/type :account.type/paid
+   :account/transaction
+   #{{:transaction/type :transaction.type/charge
+      :transaction/amount 7.99M}
+     {:transaction/type :transaction.type/payment
+      :transaction/amount -7.99M}
+     {:transaction/type :transaction.type/charge
+      :transaction/amount 2.55M}}
+   :account/current-balance 2.55M}}]
+
+;; A couple of tasks
+[{:db/id #db/id[:db.part/task]
+  :task/title "Write to Robert about Number of the Beast"
+  :task/description "He should know the first part was meandering and slow, and the ending was just self indulgent. \"Meet Lazarus, live happily ever after.\" Please!"
+  :task/status :task.status/todo
+  :task/issue-id "HOME-11"
+  :task/tag #{{:tag/name "Home"}
+              {:tag/name "Writing"}}
+  :task/user {:user/login "janed"}}
+
+ {:db/id #db/id[:db.part/task]
+  :task/title "Disappear into anonymity"
+  :task/description "Jane Doe can't be a public figure."
+  :task/status :task.status/in-progress
+  :task/issue-id "WORK-1"
+  :task/tag #{{:tag/name "Work"}
+              {:tag/name "Important"}}
+  :task/user {:user/login "janed"}}
+
+ ;; Add a subtask
+ {:db/id #db/id[:db.part/task]
+  :task/title "Pack clothes"
+  :task/description "Focus on neutral colors, hoodies."
+  :task/status :task.status/todo
+  :task/issue-id "WORK-2"
+  :task/user {:user/login "janed"}
+  :task/parent {:task/issue-id "WORK-1"}}]
