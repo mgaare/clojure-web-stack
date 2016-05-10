@@ -1,4 +1,4 @@
-(ns chapter-6.account
+(ns clojure-web-stack.account
   (:require [datomic.api :as d]))
 
 (defn calculate-balance

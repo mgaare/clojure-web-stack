@@ -1,7 +1,7 @@
-(ns chapter-6.task
+(ns clojure-web-stack.task
   (:require [clojure.string :as str]
             [datomic.api :as d]
-            [chapter-6.user :as user]))
+            [clojure-web-stack.user :as user]))
 
 (defn issue-id-from-title
   "Takes a db and task title, returns an issue-id using the first

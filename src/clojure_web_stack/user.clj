@@ -1,4 +1,4 @@
-(ns chapter-6.user
+(ns clojure-web-stack.user
   "Database functions for user operations"
   (:require [datomic.api :as d]
             [crypto.password.bcrypt :as password]))
