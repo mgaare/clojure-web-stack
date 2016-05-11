@@ -140,6 +140,14 @@
 
 (pprint ((wrap-basic-response uri-echoer) (example-request)))
 
+(defn uri-echoer-with-some-stuff
+  [req]
+  (let [uri (:uri req)]
+    {:status 201
+     :body uri}))
+
+(pprint ((wrap-basic-response uri-echoer-with-some-stuff) (example-request)))
+
 ;; ring comes with one to solve the annoying params parsing from body thing we were doing before
 
 ;; let's see how it works
