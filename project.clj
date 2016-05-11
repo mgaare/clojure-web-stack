@@ -9,6 +9,8 @@
                  ;; web libs
                  [ring "1.4.0"]
                  [compojure "1.5.0"]
-                 [liberator "0.14.1"]]
+                 [liberator "0.14.1"]
+                 ]
   :profiles {:dev {:source-paths ["dev"]
-                   :dependencies [[org.clojure/tools.namespace "0.2.11"]]}})
+                   :dependencies [[org.clojure/tools.namespace "0.2.11"]
+                                  [ring/ring-mock "0.3.0"]]}})
